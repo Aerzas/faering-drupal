@@ -1,0 +1,16 @@
+version: "3.5"
+
+services:
+  httpd:
+    volumes:
+      - ./settings/services.cookie.yml:/var/www/html/web/sites/default/services.cookie.yml${COMPOSE_MOUNT_MODE-}
+      - ./settings/services.development.yml:/var/www/html/web/sites/default/services.development.yml${COMPOSE_MOUNT_MODE-}
+      - ./settings/settings.php:/var/www/html/web/sites/default/settings.php${COMPOSE_MOUNT_MODE-}
+      - ./settings/settings.dev.php:/var/www/html/web/sites/default/settings.dev.php${COMPOSE_MOUNT_MODE-}
+
+  php:
+    volumes:
+      - ./settings/services.cookie.yml:/var/www/html/web/sites/default/services.cookie.yml${COMPOSE_MOUNT_MODE-}
+      - ./settings/services.development.yml:/var/www/html/web/sites/default/services.development.yml${COMPOSE_MOUNT_MODE-}
+      - ./settings/settings.php:/var/www/html/web/sites/default/settings.php${COMPOSE_MOUNT_MODE-}
+      - ./settings/settings.dev.php:/var/www/html/web/sites/default/settings.dev.php${COMPOSE_MOUNT_MODE-}

@@ -1,0 +1,3 @@
+parameters:
+  session.storage.options:
+    cookie_domain: '${DRUPAL_COOKIE_DOMAIN}'

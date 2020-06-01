@@ -1,0 +1,81 @@
+version: "3.5"
+
+services:
+  httpd:
+    image: faering/httpd:2.4-1.0.0
+    container_name: '${PROJECT_NAME:-drupal}_httpd'
+    depends_on:
+      - php
+    environment:
+      HTTPD_VHOST_ALLOW_OVERRIDE: All
+      HTTPD_VHOST_PRESET: php
+      HTTPD_VHOST_ROOT: /var/www/html/web
+    volumes:
+      - ${CODEBASE_PATH:-../.}:/var/www/html${COMPOSE_MOUNT_MODE-}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_httpd.rule=Host(`${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
+      - 'traefik.http.services.${PROJECT_NAME:-drupal}_httpd.loadbalancer.server.port=8080'
+    networks:
+      - faering
+      - local
+    user: ${USER_ID:-1000}
+
+  php:
+    image: faering/php:${PHP_VERSION:-7.3}-1.0.0-drupal-dev
+    container_name: '${PROJECT_NAME:-drupal}_php'
+    depends_on:
+      - mariadb
+    environment:
+      COMPOSER_MEMORY_LIMIT: -1
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_USER: ${PROJECT_NAME:-drupal}
+      DB_PASSWORD: ${PROJECT_NAME:-drupal}
+      DB_NAME: ${PROJECT_NAME:-drupal}
+      DB_DRIVER: mysql
+      DRUPAL_BATCH_SIZE: ${DRUPAL_BATCH_SIZE:-50}
+      DRUPAL_COOKIE_DOMAIN: '.${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}'
+      DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:-please-generate-a-new-hash}
+      DRUPAL_HOST_PATTERN: '${PROJECT_NAME:-drupal}\.${FAERING_PROJECT_DOMAIN:-docker.test}'
+      DRUPAL_DEV: ${DRUPAL_DEV:-0}
+      DRUSH_OPTIONS_URI: 'https://${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}'
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+    volumes:
+      - ${CODEBASE_PATH:-../.}:/var/www/html${COMPOSE_MOUNT_MODE-}
+    networks:
+      - local
+    user: ${USER_ID:-1000}
+
+  mariadb:
+    image: faering/mariadb:10.4-1.0.0
+    container_name: '${PROJECT_NAME:-drupal}_mariadb'
+    environment:
+      MYSQL_DATABASE: ${PROJECT_NAME:-drupal}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${PROJECT_NAME:-drupal}
+      MYSQL_USER_PASSWORD: ${PROJECT_NAME:-drupal}
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - local
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: '${PROJECT_NAME:-drupal}_mailhog'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_mailhog.rule=Host(`${PROJECT_NAME:-drupal}-mailhog.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
+      - 'traefik.http.services.${PROJECT_NAME:-drupal}_mailhog.loadbalancer.server.port=8025'
+    networks:
+      - faering
+      - local
+
+networks:
+  local:
+  faering:
+    name: ${FAERING_NETWORK:-faering}
+    external: true
+
+volumes:
+  database:

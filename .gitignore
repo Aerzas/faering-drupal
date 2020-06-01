@@ -1,0 +1,11 @@
+# Environement variables
+.env
+
+# Customizations
+custom
+docker-compose.custom.yml
+docker-compose.override.yml
+
+# Drupal settings
+settings/settings.custom.php
+settings/settings.local.php
