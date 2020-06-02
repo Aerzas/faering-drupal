@@ -43,7 +43,7 @@ docker run \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
     -v $(pwd):/drupal faering/php:${PHP_VERSION:-7.3}-1.0.0-drupal-dev \
-    composer create-project drupal-composer/drupal-project:8.x-dev /drupal --no-interaction
+    composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
 **Define the Drupal recipe location**
@@ -150,19 +150,27 @@ docker-compose exec php ash
 drush cr
 ```
 
+**Installing drush**
+
+On fresh install, the drush package is not installed by default.
+
+```sh
+docker-compose exec php composer require drush/drush
+```
+
 **Install a new website**
 ```sh
-drush site-install minimal -y
+docker-compose exec php drush site-install minimal -y
 ```
 
 **Clear caches**
 ```sh
-drush cr
+docker-compose exec php drush cr
 ```
 
 **Get admin one-time URL login**
 ```sh
-drush uli
+docker-compose exec php drush uli
 ```
 
 ### Customizations
