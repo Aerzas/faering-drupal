@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   httpd:
-    image: faering/httpd:2.4-1.0.0
+    image: faering/httpd:2.4-1.0.1
     container_name: '${PROJECT_NAME:-drupal}_httpd'
     depends_on:
       - php
@@ -22,7 +22,7 @@ services:
     user: ${USER_ID:-1000}
 
   php:
-    image: faering/php:${PHP_VERSION:-7.3}-1.0.0-drupal-dev
+    image: faering/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
     container_name: '${PROJECT_NAME:-drupal}_php'
     depends_on:
       - mariadb
@@ -48,7 +48,7 @@ services:
     user: ${USER_ID:-1000}
 
   mariadb:
-    image: faering/mariadb:10.4-1.0.0
+    image: faering/mariadb:10.4-1.0.1
     container_name: '${PROJECT_NAME:-drupal}_mariadb'
     environment:
       MYSQL_DATABASE: ${PROJECT_NAME:-drupal}

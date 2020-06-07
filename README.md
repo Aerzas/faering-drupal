@@ -42,7 +42,7 @@ docker run \
     --rm \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
-    -v $(pwd):/drupal faering/php:${PHP_VERSION:-7.3}-1.0.0-drupal-dev \
+    -v $(pwd):/drupal faering/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev \
     composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
@@ -79,10 +79,7 @@ sed -i "s/COMPOSE_MOUNT_MODE=/COMPOSE_MOUNT_MODE=$([ "${OSTYPE}" != "${OSTYPE#da
 
 ### Configuration
 
-A default configuration applies, but it should probably be fine-tuned according to the needs:
-```sh
-cp ${DOCKER_FOLDER:-./docker}/.env.dist ${DOCKER_FOLDER:-./docker}/.env
-```
+A default configuration applies, but it should probably be fine-tuned according to the needs.
 
 | Variable | Description | Default Value
 | --- | --- | ---
@@ -241,7 +238,7 @@ services:
       context: ../docker-custom/php
       dockerfile: ./Dockerfile
       args:
-        BASE_IMAGE_TAG: faering/php:${PHP_VERSION:-7.3}-1.0.0-drupal-dev
+        BASE_IMAGE_TAG: faering/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
 ```
 
 #### Settings

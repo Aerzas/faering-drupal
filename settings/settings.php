@@ -1,8 +1,5 @@
 <?php
 
-$config_directories = [];
-$databases = [];
-
 /**
  * Skip file system permissions hardening.
  *
@@ -25,7 +22,7 @@ $settings['trusted_host_patterns'] = [
 /**
  * Config.
  */
-$config_directories['sync'] = '../config/sync';
+$settings['config_sync_directory'] = '../config/sync';
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.cookie.yml';
 
