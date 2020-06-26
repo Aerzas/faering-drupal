@@ -19,7 +19,7 @@ Færing recipe for a Drupal project.
 
 ### Requirements
 
-- Færing: [https://framagit.org/faering/faering](https://framagit.org/faering/faering)
+- Færing: [https://github.com/aerzas/faering](https://github.com/aerzas/faering)
 
 ### Installation
 
@@ -42,7 +42,7 @@ docker run \
     --rm \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
-    -v $(pwd):/drupal faering/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev \
+    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev \
     composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
@@ -59,11 +59,11 @@ Set the drupal recipe as a submodule or a copy.
 
 - As a submodule (recommended if the project is a git repository):
 ```sh
-git submodule add git@framagit.org:faering/recipe-drupal.git ${DOCKER_FOLDER:-./docker}
+git submodule add git@github.com:aerzas/faering-drupal.git ${DOCKER_FOLDER:-./docker}
 ```
 - As a copy
 ```sh
-git clone --depth=1 git@framagit.org:faering/recipe-drupal.git ${DOCKER_FOLDER:-./docker}
+git clone --depth=1 git@github.com:aerzas/faering-drupal.git ${DOCKER_FOLDER:-./docker}
 rm -rf ${DOCKER_FOLDER:-./docker}/.git
 ```
 
@@ -203,7 +203,7 @@ services:
 ```
 
 A full list of configuration variables is available in the PHP image
-[documentation](https://framagit.org/faering/docker-php#environment-variables)
+[documentation](https://github.com/aerzas/docker-php#environment-variables)
 
 #### Add PHP packages
 
@@ -213,7 +213,7 @@ Create a new or update an existing `docker-custom/php/Dockerfile` from the root 
 ```dockerfile
 ARG BASE_IMAGE_TAG
 
-FROM faering/php:${BASE_IMAGE_TAG}
+FROM aerzas/php:${BASE_IMAGE_TAG}
 
 USER root
 
@@ -238,7 +238,7 @@ services:
       context: ../docker-custom/php
       dockerfile: ./Dockerfile
       args:
-        BASE_IMAGE_TAG: faering/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
+        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
 ```
 
 #### Settings
@@ -249,9 +249,9 @@ settings overrides must be added to a new `settings.custom.php` or `settings.loc
 
 ## Resources
 
-- [HTTPD docker image (`faering/httpd`)](https://hub.docker.com/r/faering/httpd)
-- [MariaDB docker image (`faering/mariadb`)](https://hub.docker.com/r/faering/mariadb)
-- [PHP docker image (`faering/php`)](https://hub.docker.com/r/faering/php)
+- [HTTPD docker image (`aerzas/httpd`)](https://hub.docker.com/r/aerzas/httpd)
+- [MariaDB docker image (`aerzas/mariadb`)](https://hub.docker.com/r/aerzas/mariadb)
+- [PHP docker image (`aerzas/php`)](https://hub.docker.com/r/aerzas/php)
 - [Mailhog docker image (`mailhog/mailhog`)](https://hub.docker.com/r/mailhog/mailhog)
 - [Drupal documentation](https://www.drupal.org/documentation)
 - [Drush documentation](https://docs.drush.org/en/master/)
