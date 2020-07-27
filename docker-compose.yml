@@ -22,7 +22,7 @@ services:
     user: ${USER_ID:-1000}
 
   php:
-    image: aerzas/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
+    image: aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev
     container_name: '${PROJECT_NAME:-drupal}_php'
     depends_on:
       - mariadb

@@ -42,7 +42,7 @@ docker run \
     --rm \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
-    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev \
+    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev \
     composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
@@ -238,7 +238,7 @@ services:
       context: ../docker-custom/php
       dockerfile: ./Dockerfile
       args:
-        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.0.1-drupal-dev
+        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev
 ```
 
 #### Settings
