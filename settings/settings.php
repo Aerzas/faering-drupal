@@ -59,7 +59,7 @@ if (file_exists($app_root . '/' . $site_path . '/settings.custom.php')) {
 /**
  * Dev config.
  */
-if (getenv('DRUPAL_DEV') && file_exists($app_root . '/' . $site_path . '/settings.dev.php')) {
+if (getenv('DEV_MODE') && file_exists($app_root . '/' . $site_path . '/settings.dev.php')) {
   include $app_root . '/' . $site_path . '/settings.dev.php';
 }
 

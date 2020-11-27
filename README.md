@@ -42,7 +42,7 @@ docker run \
     --rm \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
-    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev \
+    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.2.0-drupal-dev \
     composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
@@ -94,7 +94,7 @@ A default configuration applies, but it should probably be fine-tuned according 
 | Project
 | `DRUPAL_BATCH_SIZE` | Items to process per batch | `50`
 | `DRUPAL_HASH_SALT` | Salt for security hardening | `sample-hash-which-needs-to-be-replaced`
-| `DRUPAL_DEV` | Development mode, set it to `1` to activate | `0`
+| `DEV_MODE` | Development mode, set it to `1` to activate | `0`
 
 ## How to use
 
@@ -238,7 +238,7 @@ services:
       context: ../docker-custom/php
       dockerfile: ./Dockerfile
       args:
-        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev
+        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.2.0-drupal-dev
 ```
 
 #### Settings
@@ -252,6 +252,6 @@ settings overrides must be added to a new `settings.custom.php` or `settings.loc
 - [HTTPD docker image (`aerzas/httpd`)](https://hub.docker.com/r/aerzas/httpd)
 - [MariaDB docker image (`aerzas/mariadb`)](https://hub.docker.com/r/aerzas/mariadb)
 - [PHP docker image (`aerzas/php`)](https://hub.docker.com/r/aerzas/php)
-- [Mailhog docker image (`mailhog/mailhog`)](https://hub.docker.com/r/mailhog/mailhog)
+- [Mailcatcher docker image (`aerzas/mailcatcher`)](https://hub.docker.com/r/aerzas/mailcatcher)
 - [Drupal documentation](https://www.drupal.org/documentation)
 - [Drush documentation](https://docs.drush.org/en/master/)

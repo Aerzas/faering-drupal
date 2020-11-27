@@ -2,11 +2,12 @@ version: "3.5"
 
 services:
   httpd:
-    image: aerzas/httpd:2.4-1.0.1
+    image: aerzas/httpd:2.4-1.1.0
     container_name: '${PROJECT_NAME:-drupal}_httpd'
     depends_on:
       - php
     environment:
+      HTTPD_FCGI_PROXY_TIMEOUT: 30
       HTTPD_VHOST_ALLOW_OVERRIDE: All
       HTTPD_VHOST_PRESET: php
       HTTPD_VHOST_ROOT: /var/www/html/web
@@ -22,7 +23,7 @@ services:
     user: ${USER_ID:-1000}
 
   php:
-    image: aerzas/php:${PHP_VERSION:-7.3}-1.0.2-drupal-dev
+    image: aerzas/php:${PHP_VERSION:-7.3}-1.2.0-drupal-dev
     container_name: '${PROJECT_NAME:-drupal}_php'
     depends_on:
       - mariadb
@@ -38,9 +39,10 @@ services:
       DRUPAL_COOKIE_DOMAIN: '.${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}'
       DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT:-please-generate-a-new-hash}
       DRUPAL_HOST_PATTERN: '${PROJECT_NAME:-drupal}\.${FAERING_PROJECT_DOMAIN:-docker.test}'
-      DRUPAL_DEV: ${DRUPAL_DEV:-0}
+      DEV_MODE: ${DEV_MODE:-0}
       DRUSH_OPTIONS_URI: 'https://${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}'
-      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailcatcher:1025
+      PHP_XDEBUG_ENABLE: ${DEV_MODE:-0}
     volumes:
       - ${CODEBASE_PATH:-../.}:/var/www/html${COMPOSE_MOUNT_MODE-}
     networks:
@@ -48,7 +50,7 @@ services:
     user: ${USER_ID:-1000}
 
   mariadb:
-    image: aerzas/mariadb:10.4-1.0.1
+    image: aerzas/mariadb:10.4-1.1.0
     container_name: '${PROJECT_NAME:-drupal}_mariadb'
     environment:
       MYSQL_DATABASE: ${PROJECT_NAME:-drupal}
@@ -60,13 +62,13 @@ services:
     networks:
       - local
 
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: '${PROJECT_NAME:-drupal}_mailhog'
+  mailcatcher:
+    image: aerzas/mailcatcher:1.1.0
+    container_name: '${PROJECT_NAME:-watchdreamer}_mailcatcher'
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_mailhog.rule=Host(`${PROJECT_NAME:-drupal}-mailhog.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
-      - 'traefik.http.services.${PROJECT_NAME:-drupal}_mailhog.loadbalancer.server.port=8025'
+      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_mailcatcher.rule=Host(`${PROJECT_NAME:-drupal}-mailcatcher.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
+      - 'traefik.http.services.${PROJECT_NAME:-drupal}_mailcatcher.loadbalancer.server.port=8025'
     networks:
       - faering
       - local
