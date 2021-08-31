@@ -29,7 +29,7 @@ The PHP versions `7.3` and `7.4` are available.
 
 ```sh
 PROJECT_NAME=drupal
-PHP_VERSION=7.3
+PHP_VERSION=7.4
 ```
 
 **Create a new Drupal project**
@@ -42,7 +42,7 @@ docker run \
     --rm \
     -u $(id -u) \
     -e COMPOSER_MEMORY_LIMIT=-1 \
-    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.3}-1.3.2-drupal-dev \
+    -v $(pwd):/drupal aerzas/php:${PHP_VERSION:-7.4}-1.3.2-drupal-dev \
     composer create-project drupal/recommended-project /drupal --no-interaction
 ```
 
@@ -72,7 +72,7 @@ rm -rf ${DOCKER_FOLDER:-./docker}/.git
 ```sh
 cp ${DOCKER_FOLDER:-./docker}/.env.dist ${DOCKER_FOLDER:-./docker}/.env
 sed -i "s/PROJECT_NAME=drupal/PROJECT_NAME=${PROJECT_NAME}/g" ${DOCKER_FOLDER:-./docker}/.env
-sed -i "s/PHP_VERSION=7.3/PHP_VERSION=${PHP_VERSION}/g" ${DOCKER_FOLDER:-./docker}/.env
+sed -i "s/PHP_VERSION=7.4/PHP_VERSION=${PHP_VERSION}/g" ${DOCKER_FOLDER:-./docker}/.env
 sed -i "s/COMPOSE_PROJECT_NAME=drupal/COMPOSE_PROJECT_NAME=${PROJECT_NAME}/g" ${DOCKER_FOLDER:-./docker}/.env
 sed -i "s/COMPOSE_MOUNT_MODE=/COMPOSE_MOUNT_MODE=$([ "${OSTYPE}" != "${OSTYPE#darwin}" ] && echo ':cached')/g" ${DOCKER_FOLDER:-./docker}/.env
 ```
@@ -85,7 +85,7 @@ A default configuration applies, but it should probably be fine-tuned according 
 | --- | --- | ---
 | Project
 | `PROJECT_NAME` | Project name | `drupal`
-| `PHP_VERSION` | PHP version (`7.3` and `7.4`) | `7.3`
+| `PHP_VERSION` | PHP version (`7.3` and `7.4`) | `7.4`
 | `CODEBASE_PATH` | Codebase path relative to the main `docker-compose.yml` file | `../.`
 | Docker compose
 | `COMPOSE_PROJECT_NAME` | Compose stack name (should be the same as `PROJECT_NAME`) | `drupal`
@@ -238,7 +238,7 @@ services:
       context: ../docker-custom/php
       dockerfile: ./Dockerfile
       args:
-        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.3}-1.3.2-drupal-dev
+        BASE_IMAGE_TAG: aerzas/php:${PHP_VERSION:-7.4}-1.3.2-drupal-dev
 ```
 
 #### Settings
