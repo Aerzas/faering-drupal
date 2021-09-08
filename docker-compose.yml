@@ -16,6 +16,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.${PROJECT_NAME:-drupal}_httpd.rule=Host(`${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
+      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_httpd.middlewares=https_redirect@file'
       - 'traefik.http.services.${PROJECT_NAME:-drupal}_httpd.loadbalancer.server.port=8080'
     networks:
       - faering
@@ -41,8 +42,10 @@ services:
       DRUPAL_HOST_PATTERN: '${PROJECT_NAME:-drupal}\.${FAERING_PROJECT_DOMAIN:-docker.test}'
       DEV_MODE: ${DEV_MODE:-0}
       DRUSH_OPTIONS_URI: 'https://${PROJECT_NAME:-drupal}.${FAERING_PROJECT_DOMAIN:-docker.test}'
+      PHP_MEMORY_LIMIT: 256M
+      PHP_MEMORY_LIMIT_CLI: 256M
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailcatcher:1025
-      PHP_XDEBUG_ENABLE: ${DEV_MODE:-0}
+      PHP_XDEBUG_MODE: ${PHP_XDEBUG_MODE:-off}
     volumes:
       - ${CODEBASE_PATH:-../.}:/var/www/html${COMPOSE_MOUNT_MODE-}
     networks:
@@ -68,7 +71,8 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.${PROJECT_NAME:-drupal}_mailcatcher.rule=Host(`${PROJECT_NAME:-drupal}-mailcatcher.${FAERING_PROJECT_DOMAIN:-docker.test}`)'
-      - 'traefik.http.services.${PROJECT_NAME:-drupal}_mailcatcher.loadbalancer.server.port=8025'
+      - 'traefik.http.routers.${PROJECT_NAME:-drupal}_mailcatcher.middlewares=https_redirect@file'
+      - 'traefik.http.services.${PROJECT_NAME:-drupal}_mailcatcher.loadbalancer.server.port=1080'
     networks:
       - faering
       - local
